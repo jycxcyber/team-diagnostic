@@ -9,7 +9,6 @@ def initialize_excel():
     if os.path.exists(EXCEL_FILE):
         return
 
-    # 1. Generate 20 Default Departments
     departments = [
         "Human Resources", "Sales", "Engineering", "Finance", "Operations",
         "Marketing", "Product Management", "Customer Success", "Legal", "Compliance",
@@ -17,7 +16,6 @@ def initialize_excel():
         "Supply Chain", "Procurement", "Corporate Strategy", "Public Relations", "Facilities"
     ]
     
-    # 2. Define 48 Diagnostic Questions (8 per Perill Pillar)
     questions_data = [
         # Purpose & Motivation
         ("Our team has a clear, inspiring, and shared vision.", "Purpose & Motivation"),
@@ -80,7 +78,6 @@ def initialize_excel():
         ("Leadership effectively communicates and contextualizes macro organizational updates.", "Leadership")
     ]
 
-    # Assemble Config DataFrame
     config_rows = []
     for dept in departments:
         config_rows.append({"Type": "Department", "Content": dept, "Pillar": ""})
@@ -88,12 +85,9 @@ def initialize_excel():
         config_rows.append({"Type": "Question", "Content": q_text, "Pillar": pillar})
         
     df_config = pd.DataFrame(config_rows)
-    
-    # Assemble Empty Responses DataFrame structure
     response_headers = ["Timestamp", "Department"] + [q[0] for q in questions_data]
     df_responses = pd.DataFrame(columns=response_headers)
     
-    # Export to Excel Workbook
     with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl') as writer:
         df_config.to_excel(writer, sheet_name="Configuration", index=False)
         df_responses.to_excel(writer, sheet_name="Responses", index=False)
@@ -103,11 +97,8 @@ def load_config():
     initialize_excel()
     try:
         df = pd.read_excel(EXCEL_FILE, sheet_name="Configuration")
-        
         depts = df[df["Type"] == "Department"]["Content"].dropna().tolist()
         questions_df = df[df["Type"] == "Question"]
-        
-        # Construct dictionary mapping questions to their pillars
         questions_map = dict(zip(questions_df["Content"], questions_df["Pillar"]))
         return depts, questions_map
     except Exception as e:
@@ -131,9 +122,7 @@ def save_submission(department, answers):
     
     df_new_row = pd.DataFrame([new_row])
     
-    # Ensure structural conformity with the existing sheet columns
     if not df_existing.empty:
-        # Align columns dynamically if configuration changed
         df_combined = pd.concat([df_existing, df_new_row], ignore_index=True, sort=False)
     else:
         df_combined = df_new_row
