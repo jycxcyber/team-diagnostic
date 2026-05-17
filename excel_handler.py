@@ -11,8 +11,8 @@ def initialize_excel():
 
     departments = [
         "Human Resources", "Sales", "Engineering", "Finance", "Operations",
-        "Marketing", "Product Management", "Customer Success", "Legal", "Compliance",
-        "Data & Analytics", "IT Support", "Design / UX", "Quality Assurance", "R&D",
+        "Marketing", "Academy", "Retail Customer & Experience", "Legal", "IT",
+        "Data & Analytics", "IT Support", "Design / UX", "Cargo", "Lifestyle",
         "Supply Chain", "Procurement", "Corporate Strategy", "Public Relations", "Facilities"
     ]
     
