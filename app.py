@@ -193,7 +193,7 @@ elif view_mode == "📊 Administrator Dashboard":
                         tickvals=[1.0, 2.0, 3.0, 4.0, 5.0],
                         tickfont=dict(size=10)
                     ),
-                    angularaxis=dict(tickfont=dict(size=12, bold=True))
+                    angularaxis=dict(tickfont=dict(size=12)
                 ),
                 showlegend=False,
                 margin=dict(l=80, r=80, t=40, b=40),
