@@ -129,3 +129,30 @@ def save_submission(department, answers):
         
     with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
         df_combined.to_excel(writer, sheet_name="Responses", index=False)
+
+# Add this function to excel_handler.py to record admin activity
+def log_admin_action(username, action, status="Success"):
+    """Records administrative access attempts and actions into a secure ledger."""
+    initialize_excel()
+    log_file = "team_diagnostic.xlsx"
+    
+    # Define log entry structure
+    new_log = {
+        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "Username": username,
+        "Action Executed": action,
+        "Status": status
+    }
+    df_new_log = pd.DataFrame([new_log])
+    
+    try:
+        # Try to load existing logs
+        df_logs = pd.read_excel(log_file, sheet_name="AdminLogs")
+        df_combined = pd.concat([df_logs, df_new_log], ignore_index=True, sort=False)
+    except Exception:
+        # If the sheet doesn't exist yet, start a fresh one
+        df_combined = df_new_log
+
+    # Save back to Excel safely
+    with pd.ExcelWriter(log_file, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+        df_combined.to_excel(writer, sheet_name="AdminLogs", index=False)
