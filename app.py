@@ -347,6 +347,12 @@ elif view_mode == "📊 Administrator Dashboard":
     if not st.session_state["admin_authenticated"]:
         st.sidebar.markdown("---")
         st.sidebar.subheader("🔐 Multi-Admin Portal")
+
+        # Every Streamlit UI component must begin with 'st.'
+        with st.sidebar.form("admin_login_form"):
+            input_user = st.text_input("Username:")
+            input_password = st.text_input("Password:", type="password")
+            login_submitted = st.form_submit_button("Secure Login")
         
         input_user = st.sidebar.text_input("Username:")
         input_password = st.sidebar.text_input("Password:", type="password")
